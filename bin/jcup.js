@@ -38,12 +38,12 @@ yargs.command({
 yargs.command({
   command:'generate <type> <name>',
   aliases:[ 'g'],
-  describe:'genera un nuevo recurso de spring boot',
+  describe:'genera un nuevo recurso para spring boot',
   handler: generate
 }).positional('type',{
   desc:'tipo de componente que se desea generara',
   type:'string',
-  choices:['reseorce', 'res']
+  choices:['resource', 'res']
 }).positional('name',{
   describe: 'nombre del componente',
   type: 'string',

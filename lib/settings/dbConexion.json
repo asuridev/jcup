@@ -1,0 +1,37 @@
+{
+  "mysql":{
+    "url":"jdbc:mysql://<server-name>:<port>/<database-name>",
+    "driver":"com.mysql.cj.jdbc.Driver",
+    "dialect":"org.hibernate.dialect.MySQLDialect"
+  },
+  "postgres":{
+    "url":"jdbc:postgresql://<server-name>:<port>/<database-name>",
+    "driver":"org.postgresql.Driver",
+    "dialect":"org.hibernate.dialect.PostgreSQLDialect"
+  },
+  "mariadb":{
+    "url":"jdbc:mariadb://<server-name>:<port>/<database-name>",
+    "driver":"org.mariadb.jdbc.Driver",
+    "dialect":"org.hibernate.dialect.MariaDB106Dialect"
+  },
+  "oracle":{
+    "url":"jdbc:oracle:thin:@//<server-name>:<port>/<database-name>",
+    "driver":"oracle.jdbc.driver.OracleDriver",
+    "dialect":"org.hibernate.dialect.Oracle12cDialect"
+  },
+  "sql-server":{
+    "url":"jdbc:sqlserver://<server-name>:<port>;databaseName=<database-name>",
+    "driver":"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+    "dialect":"org.hibernate.dialect.SQLServerDialect"
+  },
+  "h2":{
+    "url":"jdbc:h2:mem:testdb",
+    "driver":"org.h2.Driver",
+    "dialect":"org.hibernate.dialect.H2Dialect"
+  },
+  "mongodb":{
+    "url":"mongodb+srv://<username>:<pwd>@<cluster>.mongodb.net/mygrocerylist",
+    "driver":"",
+    "dialect":""
+  }
+}
