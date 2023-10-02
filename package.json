@@ -1,6 +1,6 @@
 {
   "name": "jcup",
-  "version": "0.0.2",
+  "version": "0.0.11",
   "description": "",
   "main": "./bin/jcup.js",
   "scripts": {
@@ -10,7 +10,6 @@
   "bin": {
     "jcup": "./bin/jcup.js"
   },
-  "files":[".gitignore"],
   "keywords": [],
   "author": "",
   "license": "ISC",

@@ -40,10 +40,18 @@
         "version": ""
       },
       {
-        "configuration":"testImplementation ",
+        "configuration":"testImplementation",
         "group": "org.springframework.boot",
         "name": "spring-boot-starter-test",
         "version": ""
+      }
+    ],
+    "swagger":[
+      {
+        "configuration":"implementation",
+        "group": "org.springdoc",
+        "name": "springdoc-openapi-starter-webmvc-ui",
+        "version": "2.2.0"
       }
     ],
     "validation":[
