@@ -54,6 +54,14 @@
         "version": "2.2.0"
       }
     ],
+    "swagger2":[
+      {
+        "configuration":"implementation",
+        "group": "org.springdoc",
+        "name": "springdoc-openapi-ui",
+        "version": "1.7.0"
+      }
+    ],
     "validation":[
       {
         "configuration":"implementation",
