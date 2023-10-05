@@ -46,6 +46,14 @@
         "version": ""
       }
     ],
+    "spring-compose":[
+      {
+        "configuration":"developmentOnly",
+        "group": "org.springframework.boot",
+        "name": "spring-boot-docker-compose",
+        "version": ""
+      }
+    ],
     "swagger":[
       {
         "configuration":"implementation",
