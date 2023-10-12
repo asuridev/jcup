@@ -46,6 +46,26 @@
         "version": ""
       }
     ],
+    "spring-webflux": [
+      {
+        "configuration":"implementation",
+        "group": "org.springframework.boot",
+        "name": "spring-boot-starter-webflux",
+        "version": ""
+      },
+      {
+        "configuration":"testImplementation",
+        "group": "org.springframework.boot",
+        "name": "spring-boot-starter-test",
+        "version": ""
+      },
+      {
+        "configuration":"testImplementation",
+        "group": "io.projectreactor",
+        "name": "reactor-test",
+        "version": ""
+      }
+    ],
     "spring-compose":[
       {
         "configuration":"developmentOnly",
