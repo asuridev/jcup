@@ -43,7 +43,7 @@ yargs.command({
 }).positional('type',{
   desc:'tipo de componente que se desea generara',
   type:'string',
-  choices:['resource', 'res']
+  choices:['resource', 'res', 'web-client', 'wc', 'dto','port-adapter', 'pa']
 }).positional('name',{
   describe: 'nombre del componente',
   type: 'string',
