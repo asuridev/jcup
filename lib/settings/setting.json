@@ -74,11 +74,19 @@
         "version": ""
       }
     ],
-    "swagger":[
+    "swagger-webmvc":[
       {
         "configuration":"implementation",
         "group": "org.springdoc",
         "name": "springdoc-openapi-starter-webmvc-ui",
+        "version": "2.2.0"
+      }
+    ],
+    "swagger-webflux":[
+      {
+        "configuration":"implementation",
+        "group": "org.springdoc",
+        "name": "springdoc-openapi-starter-webflux-ui",
         "version": "2.2.0"
       }
     ],
