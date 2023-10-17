@@ -9,7 +9,7 @@
   },
   "homepage": "https://github.com/asuridev/jcup#readme",
   "scripts": {
-    "start":"./bin/jcup.js",
+    "start": "./bin/jcup.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
@@ -20,7 +20,9 @@
   "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
+    "copy-paste": "^1.5.3",
     "inquirer": "^8.0.0",
+    "quicktype-core": "^23.0.76",
     "yargs": "^17.7.2"
   }
 }
