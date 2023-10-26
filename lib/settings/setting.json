@@ -66,6 +66,22 @@
         "version": ""
       }
     ],
+
+    "spring-security":[
+      {
+        "configuration":"implementation",
+        "group": "org.springframework.boot",
+        "name": "spring-boot-starter-security",
+        "version": ""
+      },
+      {
+        "configuration":"testImplementation",
+        "group": "org.springframework.security",
+        "name": "spring-security-test",
+        "version": ""
+      }
+    ],
+
     "spring-compose":[
       {
         "configuration":"developmentOnly",
