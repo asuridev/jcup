@@ -98,6 +98,14 @@
         "version": "2.2.0"
       }
     ],
+    "java-jwt":[
+      {
+        "configuration":"implementation",
+        "group": "com.auth0",
+        "name": "java-jwt",
+        "version": "4.4.0"
+      }
+    ],
     "swagger-webflux":[
       {
         "configuration":"implementation",
