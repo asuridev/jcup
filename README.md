@@ -34,17 +34,18 @@ Seguido de esto, el asistente le mostrará una serie de menús donde podrá defi
 
 ### Tipo de proyecto.
 Podemos optar por construir un proyecto REST Servlet totalmemte síncrono o implementar el paradigma de programacion reactiva utilizando webflux.
-
- JCUP ajustará las dependencias y archivos en función del tipo seleccionado.
+JCUP ajustará las dependencias y archivos en función del tipo seleccionado.
 
 !["menu1"](/assets/menu-1.png)
 
 ### Version de Java.
 JCUP también le solicitará información acerca de la version de Java a usar en el desarrollo del proyecto. Según esto, JCUP seleccionará la version de Spring Boot y hará las configuraciones adecuadas para el proyecto.
+
 !["menu1"](/assets/menu-2.png)
 
 ### Motor de base de datos.
-Podrá seleccionar una entre varias  opciones de motores de bases de datos. JCUP gestionará los drivers y conexiones según las bases de datos seleccionadas. 
+Podrá seleccionar una entre varias  opciones de motores de bases de datos. JCUP gestionará los drivers y conexiones según las bases de datos seleccionadas.
+
 !["menu1"](/assets/menu-3.png)
 
 ### Integrar Docker Compose.
@@ -53,6 +54,7 @@ Esto es bastante útil en la fase de desarrollo y poder abstraer todo el proceso
 !["menu1"](/assets/menu-4.png)
 
 A continuación, el resumen de la creación de un proyecto.
+
 !["menu1"](/assets/menu-5.png)
 
 ### Estructura de paquetes.
