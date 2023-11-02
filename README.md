@@ -90,15 +90,32 @@ Para un recurso llamado Product se mostrará la siguiente estructura.
 !["menu1"](/assets/menu-10.png)
 
 ### Capa controladora.
-Esta contiene una clase con las anotaciones y los métodos necesarios para crear, leer, actualizar o eliminar un recurso. Ademas tendrá el potencial para realizar validaciones a nivel de parámetros, si el caso de uso lo requiere.
+Esta contiene una clase con las anotaciones y los métodos necesarios para recibir las solictudes que provienen del cliente. Ademas tendrá el potencial para realizar validaciones a nivel de parámetros, si el caso de uso lo requiere.
+Cuando el recurso es credo JCUP expone por defecto los endpoint en **api/v1/name-resource** en el puerto **3000**. si desea cambiar este comportaminto modifique el archivo aplication.yml.
+De forma predeterminada y automática JCUP genera cinco endpoints para dicho recurso segun la tabla.
+
+| Metodo   | Endpoint | Descripcion |
+|----------|----------|:------------:|
+| GET      | api/v1/resource?page=1&limit=10&orderBy=name |Obtenemos todos los recursos de forma paginada, los query params son opcionales |
+| GET      | api/v1/resource/{id} |Obtenemos un recurso segun el id|
+| POST     | api/v1/resource    |creamos un recurso segun los parametros pasados en el body de la solicitud|
+| PATCH    | api/v1/resource/{id} |Actualizamos un recurso segun el id y las propiedades pasada en el cuerpo de la solicitud|
+| DELETE   | api/v1/resource/{id} |eliminamos un registro de la base de datos segun el id|
+
 ### Capa de persistencia.
-Esta capa posee las definiciones de las entidades que este recurso almacenará en la base de datos dentro del paquete entities. Los mappers para traducir los objetos tipo entidad a los objetos de tipo servicio (Dto). Además posee la implementación del repositorio, que fue definida en la capa de servicio.
+
+Esta capa posee dentro del paquete entities las definiciones de las entidades que este recurso almacenará en la base de datos, Los mappers para traducir los objetos tipo entidad a los objetos de tipo servicio (Dto). Además posee la implementación del repositorio, que fue definida en la capa de servicio.
+
 ### Capa de servicio.
+
 Ésta posee la clase service que contiene los métodos que resuelven el caso de uso del recurso. Contiene toda la lógica que debe implementar el agregado. Tambien posee dentro del paquete dtos los objetos de datos necesarios para la comunicación entre capas. Además un convertidor de dtos cuya finalidad es convertir al dto de respuesta que espera el controlador.
+de forma automática JCUP genera 5 métodos a nivel de servicio que resuelven las solicitudes para cada endpoint definido en la capa controladora.
 
 ## Flujo de datos.
-JCUP implementa el <a href="https://en.wikipedia.org/wiki/Data_mapper_pattern" target="_blank">patron data mapper</a> con el objetivo de no generar dependencias en la capa de servicio a cualquier implementación en la capa de persitencia.
-Para implementar este patrón de forma eficiente JCUP implementa las librerias <a href="https://projectlombok.org/" target="_blank">lombok</a> y <a target="_blank" href="https://mapstruct.org/">mapStruct</a>.
+
+JCUP implementa el <a href="https://en.wikipedia.org/wiki/Data_mapper_pattern" target="_blank">patron data mapper</a> con el objetivo de no generar dependencias en la capa de servicio a cualquier implementación en la capa de persistencia.
+Para implementar este patrón de forma eficiente JCUP implementa las librerias <a href="https://projectlombok.org/" target="_blank">Lombok</a> y <a target="_blank" href="https://mapstruct.org/">MapStruct</a>.
+
 Aunque el proceso pareciera complejo, JCUP realiza todas las definiciones de los mappers para cada recurso generado, mientras que MapStruct se encarga de las implementaciones, dejando al desarrollador solo la tarea  de definir los  nombres de las propiedades y relaciones de las entidades y los objetos de servicios (dtos).
 
 !["menu1"](/assets/flujo.svg)
