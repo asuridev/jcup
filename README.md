@@ -134,7 +134,7 @@ Todos los clientes Web generados por JCUP se extienden de la clase Azios present
 
 Hay que ser cuidadoso de no inyectar  instancias de webClients en la capa de servicio, debido a que generariamos dependencias al protocolo comunicación HTTP en esta capa. La Arquitectura Exagonal plantea definir puertos y adatadores que garantizen que la capa de servicio no dependa de ningun detalle de emplementacion, en este caso de la capa de infraestructura.
 
-!["menu1"](/assets/port.svg)
+!["menu1"](/assets/port-adapter.svg)
 
 Los puertos deben ser agnosticos al protocolo de comunicion, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdran de algún protocolo de comunicacion para transferir los datos a los servicios que se desean consumir.
 
