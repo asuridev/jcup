@@ -73,13 +73,13 @@ tambien podemos utilizar el shorthand:
 ```
   jcup g res name-resource
 ```
-Se mostrará un asistente que le permitará seleccionar el tipo de estrategia de generación de claves primarias de la base de datos y si aplicara una auditoria a este recurso. Si selecciona que el recurso será auditable, JCUP implementará la configuración necesaria para agregar los campos de creación y actualización al recurso de forma automática.
+Se mostrará un asistente que le permitará seleccionar el tipo de estrategia de generación de claves primarias de la base de datos y si aplicará una auditoria a este recurso. Si selecciona que el recurso será auditable, JCUP implementará la configuración necesaria para agregar los campos de fecha de creación y fecha de actualización al recurso de forma automática.
 
   !["menu1"](/assets/menu-7.png)
 
   !["menu1"](/assets/menu-8.png)
 
-Cuando generamos un recurso se creará un CRUD completo implementando una arquitectura de tres capas: controller, persitence y services. Puede observar en la imagen la inversion de dependencia entre la capa de persistencia y la  capa de servicio del modelo de capas tradicional, lo cual permite aislar la capa de servicio de cualquier detalle de implementación en la persitencia de datos.
+Cuando generamos un recurso se creará un CRUD completo implementando una arquitectura de tres capas: controller, persitence y services. Puede observar en la imagen la inversion de dependencia entre la capa de persistencia y la  capa de servicio comparada con el modelo de capas tradicional, lo cual permite aislar la capa de servicio de cualquier detalle de implementación en la persitencia de datos.
 
 !["menu1"](/assets/capas.svg)
 
@@ -91,7 +91,7 @@ Para un recurso llamado Product se mostrará la siguiente estructura.
 
 ### Capa controladora.
 Esta contiene una clase con las anotaciones y los métodos necesarios para recibir las solictudes que provienen del cliente. Ademas tendrá el potencial para realizar validaciones a nivel de parámetros, si el caso de uso lo requiere.
-Cuando el recurso es credo JCUP expone por defecto los endpoint en **api/v1/name-resource** en el puerto **3000**. si desea cambiar este comportaminto modifique el archivo aplication.yml.
+Cuando el recurso es credo JCUP expone por defecto los endpoints en **api/v1/name-resource** en el puerto **3000**. si desea cambiar este comportaminto modifique el archivo aplication.yml.
 De forma predeterminada y automática JCUP genera cinco endpoints para dicho recurso segun la tabla.
 
 | Metodo   | Endpoint | Descripcion |
@@ -113,9 +113,67 @@ de forma automática JCUP genera 5 métodos a nivel de servicio que resuelven la
 
 ## Flujo de datos.
 
-JCUP implementa el <a href="https://en.wikipedia.org/wiki/Data_mapper_pattern" target="_blank">patron data mapper</a> con el objetivo de no generar dependencias en la capa de servicio a cualquier implementación en la capa de persistencia.
-Para implementar este patrón de forma eficiente JCUP implementa las librerias <a href="https://projectlombok.org/" target="_blank">Lombok</a> y <a target="_blank" href="https://mapstruct.org/">MapStruct</a>.
+JCUP usa el <a href="https://en.wikipedia.org/wiki/Data_mapper_pattern" target="_blank">patron data mapper</a> con el objetivo de no generar dependencias en la capa de servicio a cualquier implementación en la capa de persistencia.
+Para implementar este patrón de forma eficiente, JCUP utiliza las librerias <a href="https://projectlombok.org/" target="_blank">Lombok</a> y <a target="_blank" href="https://mapstruct.org/">MapStruct</a>.
 
-Aunque el proceso pareciera complejo, JCUP realiza todas las definiciones de los mappers para cada recurso generado, mientras que MapStruct se encarga de las implementaciones, dejando al desarrollador solo la tarea  de definir los  nombres de las propiedades y relaciones de las entidades y los objetos de servicios (dtos).
+Aunque el proceso pareciera complejo, JCUP realiza todas las definiciones de los mappers para cada recurso generado, mientras que MapStruct se encarga de las implementaciones, dejando al desarrollador la tarea  de definir los  nombres de las propiedades y relaciones entre las entidades.
 
 !["menu1"](/assets/flujo.svg)
+
+## Generando un Cliente Web
+
+```
+  jcup generate web-client name-web-client
+```
+tambien podemos utilizar el shorthand:
+```
+  jcup g wc name-web-client
+```
+Los clientes Web generados se ubican en el paquete webClients dentro del paquete common. Para  configurarlo se debe pasar al constructor la URL base a la cual desea  enviar las solicitudes, opcionalmente puede establecer las credenciales de seguridad si es el caso.
+Todos los clientes Web generados por JCUP se extienden de la clase Azios presente en el paquete common que se creó a la hora de contruir el proyecto. La clase Azios cuenta con las implementaciones de los métodos típicos del protocolo HTTP, cada uno de ellos construidos con una instancia de **WebClient** de web-flux.
+
+Hay que ser cuidadoso de no inyectar  instancias de webClients en la capa de servicio, debido a que generariamos dependencias al protocolo comunicación HTTP en esta capa. La Arquitectura Exagonal plantea definir puertos y adatadores que garantizen que la capa de servicio no dependa de ningun detalle de emplementacion, en este caso de la capa de infraestructura.
+
+!["menu1"](/assets/port.svg)
+
+Los puertos deben ser agnosticos al protocolo de comunicion, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdran de algún protocolo de comunicacion para transferir los datos a los servicios que se desean consumir.
+
+JCUP utiliza el patrón <a target="_blank" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port adapter</a>  para aislar la capa de servicio de algún protocolo de comunicación en particular.
+
+## Creando Puertos y Adaptadores
+
+```
+  jcup generate port-adapter name-resource/name-port
+```
+tambien podemos utilizar el shorthand:
+```
+  jcup g pa name-resource/name-port
+```
+
+Para implementar este patron JCUP generará un cliente web  con el nombre dado en el comando, con la terminacion **WebClient**, creará un puerto (interfaz) con la terminacion **Port** en el paquete de servicio del recurso definido y una clase con la terminacion **Adapter** dentro del paquete  de comunication.
+El desarrollador podrá inyectar el puerto en el servicio del recuso sin generar dependencias. y  realizar las implementaciones de los metodos en la clase adapter donde JCUP inyectó el cliente web generado de forma automática.
+
+## Generando Dtos
+
+```
+  jcup generate dto name-resource/name-dto
+```
+tambien podemos utilizar el shorthand:
+```
+  jcup g dto name-resource/name-dto
+```
+JCUP creará  un archivo con la terminación Dto con las anotaciones necesarias para que el desarrollador solo defina las propiedades que requiere para este nuevo objeto de transferencia.
+
+Una herramienta adicional que JCUP ofrece para construir dtos, es generarlos a partir de un archivo JSON, el cual pude ser la respuesta que proviene de un servicio externo.  Debe asegurarse de tener esta respuesta copiada al clipboard, y ejecutar el comando:
+
+```
+  jcup generate json-to-dto name-resource/name-dto
+```
+tambien podemos utilizar el shorthand:
+```
+  jcup g jtd name-resource/name-dto
+```
+JCUP utiliza la libreria <a target="_blank" href="https://quicktype.io/"> quicktype</a> para realizar el parseo y una vez obtenida la respuesta construirá los archivos que sean necesarios por usted.
+
+## Agregando Seguridad
+
