@@ -132,7 +132,7 @@ tambien podemos utilizar el shorthand:
 Los clientes Web generados se ubican en el paquete webClients dentro del paquete common. Para  configurarlo se debe pasar al constructor la URL base a la cual desea  enviar las solicitudes.
 Todos los clientes Web generados por JCUP se extienden de la clase Azios presente en el paquete common que se creó a la hora de contruir el proyecto. La clase Azios cuenta con las implementaciones de los métodos típicos del protocolo HTTP, cada uno de ellos construidos con una instancia de **WebClient** de web-flux.
 
-Hay que ser cuidadoso de no inyectar  instancias de webClients en la capa de servicio, debido a que generariamos dependencias al protocolo comunicación HTTP en esta capa. La Arquitectura Exagonal plantea definir puertos y adatadores que garantizen que la capa de servicio no dependa de ningun detalle de emplementacion, en este caso de la capa de infraestructura.
+Hay que ser cuidadoso de no inyectar  instancias de webClients en la capa de servicio, debido a que generariamos dependencias al protocolo comunicación HTTP en esta capa. La Arquitectura hexagonal plantea definir puertos y adaptadores que garantizen que la capa de servicio no dependa de ningun detalle de emplementacion, en este caso de la capa de infraestructura.
 
 !["menu1"](/assets/port-adapter.png)
 
