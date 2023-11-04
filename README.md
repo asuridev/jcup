@@ -2,7 +2,7 @@
   <a href="https://www.npmjs.com/package/jcup" target="blank"><img src="./assets/logo.png" width="220" alt="Nest Logo" /></a>
 </p>
 
-<p align="center">Una CLI creada con <a href="https://nodejs.org" target="_blank">Node.js</a> para facilitar la construcción de proyectos de Spring Boot.</p>
+<p align="center">Una CLI creada con <a href="https://nodejs.org" target="blank">Node.js</a> para facilitar la construcción de proyectos de Spring Boot.</p>
 <p align="center">
 
 ## Descripción
@@ -81,7 +81,7 @@ Se mostrará un asistente que le permitará seleccionar el tipo de estrategia de
 
 Cuando generamos un recurso se creará un CRUD completo implementando una arquitectura de tres capas: controller, persitence y services. Puede observar en la imagen la inversion de dependencia entre la capa de persistencia y la  capa de servicio comparada con el modelo de capas tradicional, lo cual permite aislar la capa de servicio de cualquier detalle de implementación en la persitencia de datos.
 
-!["menu1"](/assets/capas.svg)
+!["menu1"](/assets/layers.png)
 
 **Nota**: Las flechas de la imagen representan las dependencias entre las capas, no el flujo de los datos.
 
@@ -118,7 +118,7 @@ Para implementar este patrón de forma eficiente, JCUP utiliza las librerias <a 
 
 Aunque el proceso pareciera complejo, JCUP realiza todas las definiciones de los mappers para cada recurso generado, mientras que MapStruct se encarga de las implementaciones, dejando al desarrollador la tarea  de definir los  nombres de las propiedades y relaciones entre las entidades.
 
-!["menu1"](/assets/flujo.svg)
+!["menu1"](/assets/flujo.png)
 
 ## Generando un Cliente Web
 
@@ -129,16 +129,16 @@ tambien podemos utilizar el shorthand:
 ```
   jcup g wc name-web-client
 ```
-Los clientes Web generados se ubican en el paquete webClients dentro del paquete common. Para  configurarlo se debe pasar al constructor la URL base a la cual desea  enviar las solicitudes, opcionalmente puede establecer las credenciales de seguridad si es el caso.
+Los clientes Web generados se ubican en el paquete webClients dentro del paquete common. Para  configurarlo se debe pasar al constructor la URL base a la cual desea  enviar las solicitudes.
 Todos los clientes Web generados por JCUP se extienden de la clase Azios presente en el paquete common que se creó a la hora de contruir el proyecto. La clase Azios cuenta con las implementaciones de los métodos típicos del protocolo HTTP, cada uno de ellos construidos con una instancia de **WebClient** de web-flux.
 
 Hay que ser cuidadoso de no inyectar  instancias de webClients en la capa de servicio, debido a que generariamos dependencias al protocolo comunicación HTTP en esta capa. La Arquitectura Exagonal plantea definir puertos y adatadores que garantizen que la capa de servicio no dependa de ningun detalle de emplementacion, en este caso de la capa de infraestructura.
 
-!["menu1"](/assets/port-adapter.svg)
+!["menu1"](/assets/port-adapter.png)
 
-Los puertos deben ser agnosticos al protocolo de comunicion, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdran de algún protocolo de comunicacion para transferir los datos a los servicios que se desean consumir.
+Los puertos deben ser agnosticos al protocolo de comunicion, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdran de algún protocolo de comunicacion para transferir los datos entre los servicios que se desean consumir y nuestra aplicacion.
 
-JCUP utiliza el patrón <a target="_blank" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port adapter</a>  para aislar la capa de servicio de algún protocolo de comunicación en particular.
+JCUP utiliza el patrón <a target="blank" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port adapter</a>  para aislar la capa de servicio de algún protocolo de comunicación en particular.
 
 ## Creando Puertos y Adaptadores
 
@@ -173,7 +173,35 @@ tambien podemos utilizar el shorthand:
 ```
   jcup g jtd name-resource/name-dto
 ```
-JCUP utiliza la libreria <a target="_blank" href="https://quicktype.io/"> quicktype</a> para realizar el parseo y una vez obtenida la respuesta construirá los archivos que sean necesarios por usted.
+JCUP utiliza la libreria <a target="blank" href="https://quicktype.io/"> quicktype</a> para realizar el parseo y una vez obtenida la respuesta construirá los archivos que sean necesarios por usted.
 
 ## Agregando Seguridad
 
+De froma predeterminada cuando creamos una aplicación con JCUP el unico filtro de seguridad que tiene habilitado son los CORS con su configuracion por defecto, por lo que bloqueará cualquier intento de ingreso desde un origen diferente al de la aplicacion.
+En el paquete security, contamos con dos archivos **CorsConfig** y **SecurityConfig** para ajustar las caracteristicas de seguridad de la aplicación.
+Dentro CorsConfig podemos agragar una lista de origenes y métodos a nivel global que serán permitidos.
+
+!["configuracion de cors"](/assets/cors.png)
+
+### Autenticación y Autorización
+Si el caso de uso de la aplicacion requiere un recurso que se encargué de autenticar y autorizar usuarios a nivel de roles podemos indicarlo en el mommento de crear dicho recurso agregando la badera --auth.
+
+```
+  jcup g res name-resource --auth
+```
+JCUP además de crear el recurso realizará las siguientes tareas:
+
+1. Contruirá un recurso llamado role con una relación muchos a muchos con el recurso que acaba de crear.
+2. actualizará el controlador y el servicio para permitir un proceso de login con basic-auth en el endpoint:
+
+    name-resource/auth/login
+
+3. Instalará la dependencia de java-jwt de Auth0
+4. Creará e implementara un JwtFilter para proteger cada uno de los endpoints segun el token emitido en proceso de login.
+Por defecto todos los endpoints creados No estarán protegidos. Según la lógica de negocio en el archivo SecurityConfig del paquete security podrá ajustar el nivel de seguridad que tendrá cada endpoint en función del role
+y el nivel de acceso de cada recurso.
+
+**Nota**
+El JwtFilter y SecurityConfig creado dependerán del tipo de proyecto y versión de java seleccionada al momento de la construcción del mismo, por lo que habrá diferencias con relación a las clases y métodos utilizados, aunque en esencia la tarea de estos serán las mismas.
+
+!["configuracion de cors"](/assets/security.png)
