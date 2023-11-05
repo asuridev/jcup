@@ -136,7 +136,7 @@ Hay que ser cuidadoso de no inyectar  instancias de webClients en la capa de ser
 
 !["menu1"](/assets/port-adapter.png)
 
-Los puertos deben ser agnosticos al protocolo de comunicion, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdran de algún protocolo de comunicacion para transferir los datos entre los servicios que se desean consumir y nuestra aplicacion.
+Los puertos deben ser agnosticos al protocolo de comunición, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdran de algún protocolo de comunicacion para transferir los datos entre los servicios que se desean consumir y nuestra aplicacion.
 
 JCUP utiliza el patrón <a target="blank" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port adapter</a>  para aislar la capa de servicio de algún protocolo de comunicación en particular.
 
@@ -150,8 +150,8 @@ tambien podemos utilizar el shorthand:
   jcup g pa name-resource/name-port
 ```
 
-Para implementar este patron JCUP generará un cliente web  con el nombre dado en el comando, con la terminacion **WebClient**, creará un puerto (interfaz) con la terminacion **Port** en el paquete de servicio del recurso definido y una clase con la terminacion **Adapter** dentro del paquete  de comunication.
-El desarrollador podrá inyectar el puerto en el servicio del recuso sin generar dependencias. y  realizar las implementaciones de los metodos en la clase adapter donde JCUP inyectó el cliente web generado de forma automática.
+Para implementar este patron JCUP generará un cliente web  con el nombre dado en el comando, con la terminacion **WebClient**, creará un puerto (interfaz) con la terminacion **Port** en el paquete de servicio del recurso definido y una clase con la terminacion **Adapter** dentro del paquete  de communication.
+El desarrollador podrá inyectar el puerto en el servicio del recuso sin generar dependencias. y  realizar las implementaciones de los métodos en la clase adapter donde JCUP inyectó el cliente web generado de forma automática.
 
 ## Generando Dtos
 
@@ -197,11 +197,37 @@ JCUP además de crear el recurso realizará las siguientes tareas:
     name-resource/auth/login
 
 3. Instalará la dependencia de java-jwt de Auth0
-4. Creará e implementara un JwtFilter para proteger cada uno de los endpoints segun el token emitido en proceso de login.
-Por defecto todos los endpoints creados No estarán protegidos. Según la lógica de negocio en el archivo SecurityConfig del paquete security podrá ajustar el nivel de seguridad que tendrá cada endpoint en función del role
-y el nivel de acceso de cada recurso.
+4. Creará e implementará un JwtFilter para proteger cada uno de los endpoints segun el token emitido en proceso de login.
+Por defecto todos los endpoints creados No estarán protegidos. Según la lógica de negocio en el archivo SecurityConfig del paquete security podrá ajustar el nivel de seguridad que tendrá cada endpoint en función del role y el nivel de acceso de cada endpoint.
 
 **Nota**
 El JwtFilter y SecurityConfig creado dependerán del tipo de proyecto y versión de java seleccionada al momento de la construcción del mismo, por lo que habrá diferencias con relación a las clases y métodos utilizados, aunque en esencia la tarea de estos serán las mismas.
+Ademas la key con la cual los token son firmados y  el tiempo de expiración  de estos pueden ser ajustado en las propiedades de entorno de spring.
 
 !["configuracion de cors"](/assets/security.png)
+
+## Manejo de Excepciones
+
+JCUP incluye dentro del paquete common  un paquete llamado exceptions que posee las clases para realizar esta Tarea. La clase principal **HandlerException** tiene las anotaciones y métodos necesarios para interceptar cualquier tipo de excepción, clasificarla, formatearla y enviarla al cliente.
+Ademas cuenta con un grupo excepcines personalizadas que pueden ser lanzadas dentro cualquier punto de nuestra aplicacion.
+
+En la tabla se describe las excepciones personalizadas que estan incluidas en el paquete y disponibles para usar.
+
+| Excepcion          | Descripcion |
+|--------------------|--------------|
+|BadRequestException |Envia un mensaje de error con codigo de estado 400 para indicar que la solicitud no cumple con el formato requerido|
+|ConflictException | Envia un mensaje de error con el codigo de estado 409 para indicar alguna incosistencia durante el  procesamiento de la solicitud.|
+|UnauthorizedException | Envia un mensaje de error con codigo de estado 401 para indicar que el usuario emisor de la solicitud no se encuentra autenticado en la aplicación. |
+|ForbiddenException | Envia un mensaje de error con codigo de estado 403 para indicar que el usuario emisor de la solicitud aunque se encuentra autenticado no está autorizado para acceder al recurso.|
+|NotFoundException | Envia un mensaje de error con codigo de estado 404 para indicar que el recurso solicitado no se encontró.|
+
+**Nota** 
+Cada una de las excepciones puede recibir un mensaje como parametro, el cual será formateado dentro de un mensaje de error y enviado al cliente.
+
+## Documentación
+JCUP ajustrá las dependencias para exponer de forma automática la documentación del proyecto mediante **swagger** en la siguiente URL:
+http://localhost:3000/api/v1/doc/swagger-ui.html
+
+Tenga encuenta que cuando se selecciona la configuración de producción esta característica estará deshabilitada.
+
+## Instalacion de Dependencias
