@@ -144,6 +144,14 @@
         "version": ""
       }
     ],
+    "openfeign":[
+      {
+        "configuration":"implementation",
+        "group": "org.springframework.cloud",
+        "name": "spring-cloud-starter-openfeign",
+        "version": ""
+      }
+    ],
     "mapstruct":[
       {
         "configuration":"implementation",
