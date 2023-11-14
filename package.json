@@ -1,6 +1,6 @@
 {
   "name": "jcup",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "description": "una cli para facilitar el desarrollo de aplicacions en spring-boot",
   "main": "./bin/jcup.js",
   "repository": {
