@@ -1,36 +1,43 @@
 {
   "mysql":{
     "url":"jdbc:mysql://<server-name>:<port>/<database-name>",
+    "urlPdn":"jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_NAME}",
     "driver":"com.mysql.cj.jdbc.Driver",
     "dialect":"org.hibernate.dialect.MySQLDialect"
   },
   "postgres":{
     "url":"jdbc:postgresql://<server-name>:<port>/<database-name>",
+    "urlPdn":"jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}",
     "driver":"org.postgresql.Driver",
     "dialect":"org.hibernate.dialect.PostgreSQLDialect"
   },
   "mariadb":{
     "url":"jdbc:mariadb://<server-name>:<port>/<database-name>",
+    "urlPdn":"jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}",
     "driver":"org.mariadb.jdbc.Driver",
     "dialect":"org.hibernate.dialect.MariaDB106Dialect"
   },
   "oracle":{
     "url":"jdbc:oracle:thin:@//<server-name>:<port>/<database-name>",
+    "urlPdn":"jdbc:oracle:thin:@//${DB_HOST}:${DB_PORT}/${DB_NAME}",
     "driver":"oracle.jdbc.driver.OracleDriver",
     "dialect":"org.hibernate.dialect.Oracle12cDialect"
   },
   "sql-server":{
     "url":"jdbc:sqlserver://<server-name>:<port>;databaseName=<database-name>",
+    "urlPdn":"jdbc:sqlserver://${DB_HOST}:${DB_PORT};databaseName=${DB_NAME}",
     "driver":"com.microsoft.sqlserver.jdbc.SQLServerDriver",
     "dialect":"org.hibernate.dialect.SQLServerDialect"
   },
   "h2":{
     "url":"jdbc:h2:mem:testdb",
+    "urlPdn":"jdbc:h2:mem:testdb",
     "driver":"org.h2.Driver",
     "dialect":"org.hibernate.dialect.H2Dialect"
   },
   "mongodb":{
-    "url":"mongodb+srv://<username>:<pwd>@<cluster>.mongodb.net/mygrocerylist",
+    "url":"mongodb+srv://<username>:<pwd>@<cluster>.mongodb.net/<database-name>",
+    "urlPdn":"mongodb+srv://${DB_USER}:${DB_PASSWORD}@${DB_HOST}.mongodb.net/${DB_NAME}",
     "driver":"",
     "dialect":""
   }

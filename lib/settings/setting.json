@@ -90,6 +90,16 @@
         "version": ""
       }
     ],
+
+    "flyway":[
+      {
+        "configuration":"implementation",
+        "group": "org.flywaydb",
+        "name": "flyway-core",
+        "version": ""
+      }
+    ],
+
     "swagger-webmvc":[
       {
         "configuration":"implementation",
