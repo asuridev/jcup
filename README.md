@@ -18,6 +18,7 @@ JCUP  permite:
 - Generar clientes Rest. 
 - Implementar seguridad.
 - Generar documentación.
+- gestionar Migraciones.
 
 Todo esto, implementando una arquitectura por capas orientada al dominio.
 
@@ -108,7 +109,7 @@ Esta capa posee dentro del paquete entities las definiciones de las entidades qu
 
 ### Capa de servicio.
 
-Ésta posee la clase service que contiene los métodos que resuelven el caso de uso del recurso. Contiene toda la lógica que debe implementar el agregado. Tambien posee dentro del paquete dtos los objetos de datos necesarios para la comunicación entre capas. Además un convertidor de dtos cuya finalidad es convertir al dto de respuesta que espera el controlador.
+Ésta posee la clase service que contiene los métodos que resuelven el caso de uso del recurso. Contiene toda la lógica que debe implementar el agregado. Tambien posee dentro del paquete los dtos, que son los objetos de datos necesarios para la comunicación entre capas. Además un convertidor de dtos cuya finalidad es convertir al dto de respuesta que espera el controlador.
 de forma automática JCUP genera 5 métodos a nivel de servicio que resuelven las solicitudes para cada endpoint definido en la capa controladora.
 
 ## Flujo de datos.
@@ -120,7 +121,7 @@ Aunque el proceso pareciera complejo, JCUP realiza todas las definiciones de los
 
 !["menu1"](/assets/flujo.png)
 
-## Generando un Cliente Web
+## Generando un Cliente Rest
 
 ```
   jcup generate rest-client name-rest-client
@@ -130,13 +131,13 @@ tambien podemos utilizar el shorthand:
   jcup g rc name-rest-client
 ```
 Los clientes REST generados se ubican en el paquete restClients dentro del paquete common. 
-Todos los clientes Web generados por JCUP se extienden de la clase Azios presente en el paquete common que se creó a la hora de contruir el proyecto. La clase Azios varia en función del tipo de proyecto seleccionado, si es una aplicación tipo servlet esta será una interfaz con la definicion de los metodos de la libreria **open-feign**, mientras que si la aplicación es reactiva (web-flux), será una clase con la implementación de los metodos de la libreria **webClient** de web-flux.
+Todos los clientes Rest generados por JCUP se extienden de la clase Azios presente en el paquete common que se creó a la hora de contruir el proyecto. La clase Azios varia en función del tipo de proyecto seleccionado, si es una aplicación tipo servlet esta será una interfaz con la definicion de los metodos de la libreria **open-feign**, mientras que si la aplicación es reactiva (web-flux), será una clase con la implementación de los metodos de la libreria **webClient** de web-flux.
 
 Hay que ser cuidadoso de no inyectar  instancias de restClients en la capa de servicio, debido a que generariamos dependencias al protocolo comunicación HTTP en esta capa. La Arquitectura hexagonal plantea definir puertos y adaptadores que garantizen que la capa de servicio no dependa de ningun detalle de emplementacion, en este caso de la capa de infraestructura.
 
 !["menu1"](/assets/port-adapter.png)
 
-Los puertos deben ser agnosticos al protocolo de comunición, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdrán de algún protocolo de comunicación para transferir los datos entre los servicios que se desean consumir y nuestra aplicación.
+Los puertos deben ser agnosticos al protocolo de comunición, seran interfaces que definen los datos que se requiren de un servicio externo. Los adaptadores  implementaran estas interfaces y se valdrán de algún protocolo de comunicación para transferir los datos entre los servicios que se dese consumir nuestra aplicación.
 
 JCUP utiliza el patrón <a target="blank" href="https://en.wikipedia.org/wiki/Hexagonal_architecture_(software)">port adapter</a>  para aislar la capa de servicio de algún protocolo de comunicación en particular.
 
@@ -151,7 +152,7 @@ tambien podemos utilizar el shorthand:
 ```
 
 Para implementar este patron JCUP generará un cliente rest  con el nombre dado en el comando, con la terminacion **RestClient**, creará un puerto (interfaz) con la terminacion **Port** en el paquete de servicio del recurso definido y una clase con la terminacion **Adapter** dentro del paquete  de communication.
-El desarrollador podrá inyectar el puerto en el servicio del recuso sin generar dependencias. Realizar las implementaciones de los métodos en la clase adapter donde JCUP inyectó el cliente rest generado de forma automática.
+El desarrollador podrá inyectar el puerto en el servicio del recuso sin generar dependencias, y realizar las implementaciones de los métodos en la clase adapter donde JCUP inyectó el cliente rest generado de forma automática.
 
 ## Generando Dtos
 
