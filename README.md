@@ -109,7 +109,7 @@ Esta capa posee dentro del paquete entities las definiciones de las entidades qu
 
 ### Capa de servicio.
 
-Ésta posee la clase service que contiene los métodos que resuelven el caso de uso del recurso. Contiene toda la lógica que debe implementar el agregado. Tambien posee dentro del paquete los dtos, que son los objetos de datos necesarios para la comunicación entre capas. Además un convertidor de dtos cuya finalidad es convertir al dto de respuesta que espera el controlador.
+Ésta posee la clase service que contiene los métodos que resuelven el caso de uso del recurso. Contiene toda la lógica que debe implementar el agregado. Tambien posee dentro del paquete los dtos, que son los objetos de datos necesarios para la comunicación entre capas. Además un convertidor de dtos cuya finalidad es convertir al dto de respuesta que espera el controlador para enviar al cliente.
 de forma automática JCUP genera 5 métodos a nivel de servicio que resuelven las solicitudes para cada endpoint definido en la capa controladora.
 
 ## Flujo de datos.
@@ -231,4 +231,96 @@ http://localhost:3000/api/v1/doc/swagger-ui.html
 
 Tenga encuenta que cuando se selecciona la configuración de producción esta característica estará deshabilitada.
 
-## Instalacion de Dependencias
+## Instalación de Dependencias
+JCUP instalará las dependencias necesaria segun las selecciones que se hayan realizados en cada uno de los asistentes.
+Sin embargo puede  personalizar las dependencias usadas en el proyecto utilizando los comandos para instalar y desinstalar dependencias.
+
+```
+  jcup install name-dependencie
+```
+
+```
+  jcup uninstall name-dependencie
+```
+acontinuacion se detalla una tabla con las dependencias que maneja por JCUP.
+
+| Dependencia                | Nombre (JCUP)    |
+|----------------------------|------------------|
+|spring-boot-starter-web     | spring-web       |
+|spring-boot-starter-webflux | spring-webflux   |
+|spring-boot-starter-security| spring-security  |
+|spring-boot-docker-compose  | spring-compose   |
+|flyway-core                 | flyway           |
+|springdoc-openapi-starter-webmvc-ui|swagger-webmvc|
+|java-jwt|java-jwt|
+|springdoc-openapi-starter-webflux-ui|swagger-webflux|
+|springdoc-openapi-ui|swagger2|
+|spring-boot-starter-validation|validation|
+|lombok| lombok|
+|spring-cloud-starter-openfeign| openfeign |
+|mapstruct | mapstruct|
+
+Ademas las dependencias necesarias para controlar la base de datos seleccionada la cual se insertaran de forma automática.
+
+## Paso a producción
+Para el paso de aplicación a producción es necesario las siguientes consideraciones:
+### Dockerfile
+cunado el proyecto fué creado con el comando **new** se creó en la raiz del proyecto el archivo Dockerfile con las instrucciones de docker optimizadas para la creacion de la imagen.
+el cual podrá ser ejecutada con el comando docker build
+
+```
+  docker build -t image-name .
+```
+
+### Variables de entorno
+Para  crear el contenedor con la imagen previamente generada es necesario establecer los valores adecuados de las variables de entorno.
+- PROFILE
+
+Por defecto el perfil de la aplicación es **dev**, establecer a **pdn** para insertar las configuraciones de producción en nuestra aplicacion.
+
+- SERVER_PORT
+
+Establece en número de puerto donde funcionará la aplicación.
+
+- JWT_SECRET
+
+Define el secreto que utlizará la aplicacion para firmar los tokon JWT si es requerido.
+
+- JWT_TIMEOUT
+
+Establece el timpo en minutos en la que estara activo un token firmado por la aplicacion.
+
+- DB_HOST
+
+Define la dirección IP o dominio donde se encuentra la base de datos con la cual se conectará.
+
+- DB_PORT
+
+El numero de puerto  de la base de datos.
+
+- DB_NAME
+
+El nombre de la base de datos donde se conectara la aplicacion.
+
+- DB_USER
+
+Nombre de usuario para la conexión a la base de datos
+
+- DB_PASSWORD
+
+Contraseña para la conexión a la base de datos.
+
+### Migración de la base de datos.
+para ejecutar las migraciones JCUP implementa la dependencia flyway la cual ejecutará los script SQL  que se encuantren en el path:
+**resources/db/migration**
+para la primera migración JCUP generará el archivo **V1__initial_schema.sql** en el cual se deberan colocar los script que fueron generados en la fase de desarrollo.
+
+Nota:
+Colocar los scripts de las tablas que poseen relaciones al final de este.
+
+
+
+
+
+
+
